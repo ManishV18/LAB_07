@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: demucs-rest
-          image: aishwarya09031997/demucs-rest:latest
+          image: vankudremanish/demucs-rest:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5001
