@@ -11,9 +11,8 @@ import glob
 #
 # Use localhost & port 5000 if not specified by environment variable REST
 #
-port = "80"
-# REST = os.getenv("REST") or f"localhost:{port}"
-REST = os.getenv("REST") or f"104.196.142.104:5001"
+# REST = os.getenv("REST") or "localhost:5000"
+REST = os.getenv("REST") or "localhost:80"
 
 ##
 # The following routine makes a JSON REST query of the specified type
@@ -38,13 +37,13 @@ def mkReq(reqmethod, endpoint, data, verbose=True):
         return response.text
 
 
-for mp3 in glob.glob("data/short*mp3"):
+for mp3 in glob.glob("short-data/short*mp3"):
     print(f"Separate data/{mp3}")
     mkReq(requests.post, "apiv1/separate",
         data={
             "mp3": base64.b64encode( open(mp3, "rb").read() ).decode('utf-8'),
             "callback": {
-                "url": REST,
+                "url": "http://localhost:5000",
                 "data": {"mp3": mp3, 
                          "data": "to be returned"}
             }
