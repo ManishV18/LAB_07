@@ -6,43 +6,24 @@ spec:
   selector:
     matchLabels:
       app: demucs-worker
-      tier: frontend
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
         app: demucs-worker
-        tier: frontend
     spec:
       containers:
-      - name: python-worker
-        image: jayantduneja1234/demucs-worker:latest
-        resources:
-          requests:
-            cpu: 100m
-            memory: 100Mi
+      - name: demucs-worker
+        image: aishwarya09031997/demucs-worker:latest
+        imagePullPolicy: Always
+        # resources:
+        #   requests:
+        #     cpu: 1000m
+        #     memory: 2000Mi
         env:
-        - name: GET_HOSTS_FROM
-          value: dns
         - name: REDIS_HOST
-          value: redis
-        - name: REDIS_SLAVE_SERVICE_HOST
-          value: redis
-        - name: PYTHONUNBUFFERED
-          value: "1"
-        - name: PYTHONIOENCODING
-          value: UTF-8
+          value: "redis"
         - name: REDIS_PORT
           value: "6379"
         - name: MINIO_HOST
-          value: minio
-        - name: MINIO_PORT
-          value: "9000"
-          # If your cluster config does not include a dns service, then to
-          # instead access environment variables to find service host
-          # info, comment out the 'value: dns' line above, and uncomment the
-          # line below:
-          # value: env
-        ports:
-        - containerPort: 5000
----
+          value: "minio:9000"

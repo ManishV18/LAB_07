@@ -4,23 +4,33 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: demucs-ingress
+  name: frontend-ingress
   annotations:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/proxy-body-size: 16m
 spec:
   rules:
-  - host: localhost
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: demucs
-            port:
-              number: 80
+    - http:
+        paths:
+          - backend:
+              service:
+                name: demucs-rest-service
+                port:
+                  number: 5001
+            path: /
+            pathType: Prefix
 #
 # Your ingress rules here
 #
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demucs-rest-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5001
+  selector:
+    app: demucs-rest
